@@ -9,25 +9,41 @@ func main() {
 	// wt[] int - item weights
 	// find max sum of weights which >= w
 
-	//values := []int{1, 2, 3}
-	//weights := []int{4, 5, 6}
-	//cap := 3
+	// values := []int{1, 2, 3}
+	// weights := []int{4, 5, 6}
+	// cap := 3
+	// fmt.Println(solveTask(values, weights, cap)) // 0
 
-	//values := []int{2, 3, 1}
-	weights := []int{4, 3, 2}
-	//cap := 5
+	// values := []int{2, 3, 1}
+	// weights := []int{4, 3, 2}
+	// cap := 5
 	//fmt.Println(solveTask(values, weights, cap)) // 4
-	fmt.Println(genCombs(weights))
+
+	values := []int{1, 2, 3}
+	weights := []int{4, 5, 1}
+	cap := 3
+	fmt.Println(solveTask(values, weights, cap)) // 3
 }
 
 func solveTask(values []int, weights []int, cap int) int {
 	// 1. Create all possible combinations
 	// 2. Take only those, that <= cap
 	// 3. Return the combination with the greatest value
-	return 0
+	combs := genCombs(weights, cap)
+	var maxValueSum int
+	for _, comb := range combs {
+		var valueSum int
+		for _, el := range comb {
+			valueSum += values[find(weights, el)]
+		}
+		if valueSum > maxValueSum {
+			maxValueSum = valueSum
+		}
+	}
+	return maxValueSum
 }
 
-func genCombs(s []int) [][]int {
+func genCombs(s []int, v int) [][]int {
 	// How to generate combinations?
 	// Take first element
 	// Get all without first
@@ -35,12 +51,29 @@ func genCombs(s []int) [][]int {
 	if len(s) == 0 {
 		return [][]int{{}}
 	}
-	first := s[0]
-	rest := s[1:]
-	restCombs := genCombs(rest)
-	combsWithFirst := make([][]int, len(restCombs))
-	for i, comb := range restCombs {
-		combsWithFirst[i] = append(comb, first)
+	restCombs := genCombs(s[1:], v)
+	var combsWithFirst [][]int
+	for _, comb := range restCombs {
+		if sum(comb)+s[0] <= v {
+			combsWithFirst = append(combsWithFirst, append(comb, s[0]))
+		}
 	}
 	return append(restCombs, combsWithFirst...)
+}
+
+func sum(s []int) int {
+	var sum int
+	for _, el := range s {
+		sum += el
+	}
+	return sum
+}
+
+func find(s []int, v int) int {
+	for i, el := range s {
+		if el == v {
+			return i
+		}
+	}
+	panic("must not happen")
 }
