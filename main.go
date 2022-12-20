@@ -1,30 +1,5 @@
 package main
 
-import "fmt"
-
-func main() {
-	// n - item count
-	// w - knopsack capacity
-	// val[] int - values associated with items
-	// wt[] int - item weights
-	// find max sum of weights which >= w
-
-	// values := []int{1, 2, 3}
-	// weights := []int{4, 5, 6}
-	// cap := 3
-	// fmt.Println(solveTask(values, weights, cap)) // 0
-
-	// values := []int{2, 3, 1}
-	// weights := []int{4, 3, 2}
-	// cap := 5
-	//fmt.Println(solveTask(values, weights, cap)) // 4
-
-	values := []int{1, 2, 3}
-	weights := []int{4, 5, 1}
-	cap := 3
-	fmt.Println(solveTask(values, weights, cap)) // 3
-}
-
 func solveTask(values []int, weights []int, cap int) int {
 	// 1. Create all possible combinations
 	// 2. Take only those, that <= cap
