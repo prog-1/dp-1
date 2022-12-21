@@ -3,14 +3,14 @@ package main
 import "fmt"
 
 func main() {
-	vs := []int{1, 2, 3} //item values
-	ws := []int{4, 5, 6} //item weights
-	cap := 3             //knapsack capacity (w)
-	fmt.Println(knapsack(vs, ws, cap))
+	vs := []int{2, 7, 4, 6, 5} //item values
+	ws := []int{3, 2, 5, 2, 3} //item weights
+	cap := 5                   //knapsack capacity (w)
+	fmt.Println(Knapsack(vs, ws, cap))
 }
 
 //returns sum of   max subset of val, where wt <= cap
-func knapsack(vs, ws []int, cap int) (max int) {
+func Knapsack(vs, ws []int, cap int) (max int) {
 	var cs, cw int      //cur sum & cur weight
 	for i := range vs { //for each element
 		for j := i; j < len(vs); j++ { //for each el from the right of i
