@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 func max(a, b int) int {
@@ -27,9 +29,20 @@ func knapsack(v, w []int, mw, n int, cache map[int]int) int {
 	return maxValue
 }
 func main() {
-	n := 3
-	w := 1000
-	values := []int{1, 2, 3, 8}
-	weight := []int{4, 5, 1, 1}
+	r := bufio.NewReader(os.Stdin)
+	fmt.Println("Enter N and W:")
+	var n, w int
+	fmt.Fscan(r, &n, &w)
+	values := make([]int, n)
+	weight := make([]int, n)
+	fmt.Println("Enter values:")
+	for i := 0; i < n; i++ {
+		fmt.Fscan(r, &values[i])
+	}
+	fmt.Println("Enter weight:")
+	for i := 0; i < n; i++ {
+		fmt.Fscan(r, &weight[i])
+	}
+
 	fmt.Println(knapsack(values, weight, w, n, map[int]int{}))
 }
