@@ -32,8 +32,3 @@ func max(a, b int) int {
 	}
 	return b
 }
-func main() {
-	val := []int{1, 6, 10, 16}
-	wt := []int{1, 2, 3, 5}
-	fmt.Println(knapsack(4, 7, val, wt))
-}
