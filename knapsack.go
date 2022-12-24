@@ -1,29 +1,41 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
+
+type Key struct {
+	cap int
+	i   int
+}
 
 func main() {
 	vs := []int{2, 7, 4, 6, 5} //item values
 	ws := []int{3, 2, 5, 2, 3} //item weights
 	cap := 5                   //knapsack capacity (w)
-	fmt.Println(Knapsack(vs, ws, cap))
+	var cache map[Key]int      //declaring cache map
+	fmt.Println(knapsack(vs, ws, cap, 0, cache))
 }
 
-//returns sum of   max subset of val, where wt <= cap
-func Knapsack(vs, ws []int, cap int) (max int) {
-	var cs, cw int      //cur sum & cur weight
-	for i := range vs { //for each element
-		for j := i; j < len(vs); j++ { //for each el from the right of i
-			if cw+ws[j] > cap { //if we went out of capacity with new el
-				if max < cs { //compare results
-					max = cs
-				}
-				cs, cw = 0, 0 //reset counters
-			} else { // if cw + new el <= cap
-				cs += vs[j] //ad new el to cur sum
-				cw += ws[j] //ad new el weight to cur weight
-			}
+//returns max value of items, which weight is <= cap
+func knapsack(vs, ws []int, cap, i int, cache map[Key]int) (res int) {
+	if res, ok := cache[Key{cap, i}]; ok {
+		return res
+	}
+	if i >= len(ws) || cap <= 0 { //base case
+		return 0
+	}
+	if ws[i] > cap { //if w of i item > cap -> skip i item
+		res = knapsack(vs, ws, cap, i+1, cache) //calculate choices with i item excluded
+	} else {
+		incl := vs[i] + knapsack(vs, ws, cap-ws[i], i+1, cache) //calculate choices with i item included
+		excl := knapsack(vs, ws, cap, i+1, cache)               //calculate choices with i item excluded
+		if incl > excl {                                        //choose max from two
+			res = incl
+		} else {
+			res = excl
 		}
 	}
-	return max
+	cache[Key{cap, i}] = res
+	return res
 }
