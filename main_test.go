@@ -19,7 +19,7 @@ func TestTask(t *testing.T) {
 		{Input{[]int{1, 2, 3}, []int{4, 5, 6}, 3}, 0},
 		{Input{[]int{2, 7, 4, 6, 5}, []int{3, 2, 5, 2, 3}, 8}, 18},
 	} {
-		if got := knapsack(tc.input.cap, len(tc.input.values), tc.input.values, tc.input.weights); got != tc.want {
+		if got := knapsack(tc.input.cap, len(tc.input.values), tc.input.values, tc.input.weights, make(map[Key]int, 0)); got != tc.want {
 			t.Errorf("got = %v, want = %v", got, tc.want)
 		}
 	}
