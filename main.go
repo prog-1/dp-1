@@ -1,54 +1,23 @@
 package main
 
-func solveTask(values []int, weights []int, cap int) int {
-	// 1. Create all possible combinations
-	// 2. Take only those, that <= cap
-	// 3. Return the combination with the greatest value
-	combs := genCombs(weights, cap)
-	var maxValueSum int
-	for _, comb := range combs {
-		var valueSum int
-		for _, el := range comb {
-			valueSum += values[find(weights, el)]
-		}
-		if valueSum > maxValueSum {
-			maxValueSum = valueSum
-		}
+func knapsack(leftCap, n int, v, w []int) int {
+	if n == 0 || leftCap == 0 {
+		return 0
 	}
-	return maxValueSum
+	if w[n-1] > leftCap {
+		return knapsack(leftCap, n-1, v, w)
+	}
+	return max(v[n-1]+knapsack(leftCap-w[n-1], n-1, v, w), knapsack(leftCap, n-1, v, w))
 }
 
-func genCombs(s []int, v int) [][]int {
-	// How to generate combinations?
-	// Take first element
-	// Get all without first
-	// Create another array with combs from all without first, but with first, and concatenate it with all without first
-	if len(s) == 0 {
-		return [][]int{{}}
+// max returns the maximum of two integers.
+func max(a, b int) int {
+	if a > b {
+		return a
 	}
-	restCombs := genCombs(s[1:], v)
-	var combsWithFirst [][]int
-	for _, comb := range restCombs {
-		if sum(comb)+s[0] <= v {
-			combsWithFirst = append(combsWithFirst, append(comb, s[0]))
-		}
-	}
-	return append(restCombs, combsWithFirst...)
+	return b
 }
 
-func sum(s []int) int {
-	var sum int
-	for _, el := range s {
-		sum += el
-	}
-	return sum
-}
 
-func find(s []int, v int) int {
-	for i, el := range s {
-		if el == v {
-			return i
-		}
-	}
-	panic("must not happen")
+func main() {
 }
